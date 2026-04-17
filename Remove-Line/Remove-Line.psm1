@@ -98,7 +98,7 @@ function Reset-Line
         $archivo_ruta = "$($archivos.Get($i).FullName)"
         $prueba_ruta = "$($archivos.Get($i).FullName)" -split [regex]::Escape("$($archivos.Get($i).Name)") -join "$($archivo_nuevo)"
         [int64]$len = $("$($archivo_nuevo.Length)" - "$($archivo_original_ext.Length)")
-        
+
         if($len -cle "$NULL_STRING")
         {
             Write-Warning -Message "`"$($archivo_original)`" >> `"$($archivo_nuevo)`" no puede quedar vacio.`nSaltando..."
@@ -146,7 +146,7 @@ function Rename-Line
         if($archivos.Get($i).BaseName -notmatch "$([regex]::Escape("$($Patron)"))")
         {
             continue
-        }   
+        }
         $archivo_original = $archivos.Get($i).Name
         $archivo_original_ext = "$($archivos.Get($i).Extension)"
         $archivo_nuevo = "$($archivo_original)" -split "$($archivos.Get($i).Extension)" -join "$null" -split [regex]::Escape("$($patron)") -join "$($Rename)" -split "$" -join "$($archivo_original_ext)"
