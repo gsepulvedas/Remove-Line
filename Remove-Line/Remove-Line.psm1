@@ -1,13 +1,6 @@
-<#
-AUTOR: Gabriel Sepúlveda Santibáñez
-AÑO: 15-04-2026
-CONTACTO: gabriel.sepulveda.s@outlook.es
-DESCRIPCIÓN: Aplicación qu es capaz de editar archivos de forma masiva
-#>
 New-Variable -Name "MAX_PATH" -Value 248 -Option Constant
 New-variable -Name "NULL_STRING" -Value 0 -Option Constant
 
-<# Elimina Solo desde el primer lugar #>
 function Remove-First
 {
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
@@ -27,7 +20,6 @@ function Remove-First
             Write-Warning -Message "`"$($Patron)`" no se puede procesar la cadena completa.`nSaltando..."
             continue
         }
-        <# Se aplica el filtro antes #>
         if($archivos.Get($i).Name -notmatch "^$([regex]::Escape("$($Patron)")).*")
         {
             continue
@@ -35,7 +27,6 @@ function Remove-First
 
         $archivo_original = $archivos.Get($i).Name
         $archivo_original_ext = "$($archivos.Get($i).Extension)"
-        #$archivo_nuevo = "$($archivo_original)" -split [regex]::Escape("$($Patron)") -join ""
         $archivo_nuevo = "$($archivo_original)" -split "$($archivos.Get($i).Extension)" -join "$null" -split [regex]::Escape("$($Patron)") -join "" -split "$" -join "$($archivo_original_ext)"
         $archivo_ruta = $archivos.Get($i).FullName
         $prueba_ruta = "$($archivos.Get($i).FullName)" -split [regex]::Escape("$($archivos.Get($i).Name)") -join "$($archivo_nuevo)"
@@ -69,7 +60,6 @@ function Remove-First
     }
 }
 
-<# Elimina en cualquier ubicación #>
 function Reset-Line
 {
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
@@ -93,7 +83,6 @@ function Reset-Line
         }
         $archivo_original = "$($archivos.Get($i).Name)"
         $archivo_original_ext = "$($archivos.Get($i).Extension)"
-#       $archivo_nuevo = "$($archivo_original)" -split [regex]::Escape("$($Patron)") -join ""
         $archivo_nuevo = "$($archivo_original)" -split "$($archivos.Get($i).Extension)" -join "$null" -split [regex]::Escape("$($Patron)") -join "" -split "$" -join "$($archivo_original_ext)"
         $archivo_ruta = "$($archivos.Get($i).FullName)"
         $prueba_ruta = "$($archivos.Get($i).FullName)" -split [regex]::Escape("$($archivos.Get($i).Name)") -join "$($archivo_nuevo)"
@@ -122,7 +111,6 @@ function Reset-Line
     }
 }
 
-<# renombra en cualquier ubicación #>
 function Rename-Line
 {
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
@@ -177,7 +165,6 @@ function Rename-Line
     }
 }
 
-<# Función principal #>
 function Remove-Line {
 <#
  .SYNOPSIS
@@ -281,7 +268,7 @@ $argumentos = @{
     Filter = $Filter
     ErrorAction = "SilentlyContinue"
 }
-<# Para tener caracteres reservados como literales regex #>
+
 [array]$archivos = $(Get-ChildItem @argumentos | Where-Object { $_.Name -match [regex]::Escape("$($patron)")})
 
 
